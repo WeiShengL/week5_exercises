@@ -6,28 +6,22 @@
 
 int factorial(int n)
 {
-        return n == 0 ? 1 : n * factorial(n-1);
+    if(n<0)
+    {
+        std::string errorMessage = "No factorial for negative numbers";
+        throw std::range_error(errorMessage);
+    }
+    return n == 0 ? 1 : n * factorial(n-1);
 }
 
 void printProcessedFile(std::string fileName)
 {
-    FILE *f = std::fopen(fileName.c_str(), "rw");
-    if(!f) {
-        std::string err_msg = "Failed to open file " + fileName;
-        throw std::runtime_error(err_msg);
-    }
-    std::cout << "File opened." << std::endl;
+    FileManager f(fileName);
 
     int n;
-    while (std::fscanf(f, "%d", &n) != EOF)
+    while (f.getData(n) != EOF)
     {
         std::cout << n << "! = " << factorial(n) << std::endl;
-    }
-
-    if (f)
-    {
-        std::fclose(f);
-        std::cout << "File closed." << std::endl;
     }
 }
 
