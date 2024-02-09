@@ -13,9 +13,19 @@ int main()
     }   
     std::unique_ptr<AbstractIntegrator> myTrapeziumIntegrator = std::make_unique<TrapeziumIntegrator>();
     std::unique_ptr<AbstractIntegrator> mySimpsonIntegrator = std::make_unique<SimpsonIntegrator>();
-    DiscreteFunction DF(ys, 0, 1, mySimpsonIntegrator);
+    // DiscreteFunction DF(ys, 0, 1, myTrapeziumIntegrator);
 
+
+    // std::cout << DF.integrate() << std::endl;
+
+    // DF.setIntegrator(mySimpsonIntegrator);
+    // std::cout << DF.integrate() << std::endl;
+
+
+    DiscreteFunction DF(ys, 0, 1);
+    // DF.setIntegrator(myTrapeziumIntegrator);
     std::cout << DF.integrate() << std::endl;
+
 
     return 0;
 }

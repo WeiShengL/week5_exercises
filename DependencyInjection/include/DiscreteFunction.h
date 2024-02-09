@@ -29,10 +29,11 @@ class TrapeziumIntegrator : public AbstractIntegrator
 class DiscreteFunction
 {
     public:
-    DiscreteFunction(std::vector<double> y, double x_min, double x_max, std::unique_ptr<AbstractIntegrator> &inIntegrator);
-    // DiscreteFunction(std::unique_ptr<AbstractIntegrator> &inIntegrator);
+    DiscreteFunction(std::vector<double> y, double x_min, double x_max);
 
     double integrate();
+
+    void setIntegrator(std::unique_ptr<AbstractIntegrator> &inIntegrator);
 
     private:
     // std::unique_ptr<TrapeziumIntegrator> integrator;

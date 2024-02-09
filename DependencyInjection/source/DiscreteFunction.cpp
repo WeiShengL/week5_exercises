@@ -1,7 +1,8 @@
 #include "DiscreteFunction.h"
 #include <stdexcept>
+#include <iostream>
 
-DiscreteFunction::DiscreteFunction(std::vector<double> y, double x_min, double x_max, std::unique_ptr<AbstractIntegrator> &inIntegrator) : max_x(x_max), min_x(x_min)
+DiscreteFunction::DiscreteFunction(std::vector<double> y, double x_min, double x_max) : max_x(x_max), min_x(x_min)
 {
     if(y.size() < 3)
     {
@@ -17,14 +18,26 @@ DiscreteFunction::DiscreteFunction(std::vector<double> y, double x_min, double x
 
     delta_x = (x_max - x_min) / (ys.size()-1);
 
-    // integrator = std::make_unique<TrapeziumIntegrator>();
-    integrator = std::move(inIntegrator);
-    // integrator = std::make_unique<AbstractIntegrator>();
+    // integrator = std::move(inIntegrator);
 }
 
 double DiscreteFunction::integrate()
 {
-    return integrator->integrate(delta_x, ys);
+    if (integrator)
+    {
+        return integrator->integrate(delta_x, ys);
+    }
+    else
+    {
+        std::string errorMessage = "Integrator is not set" ;
+        throw std::logic_error(errorMessage);
+    }
+    // return integrator->integrate(delta_x, ys);
+}
+
+void DiscreteFunction::setIntegrator(std::unique_ptr<AbstractIntegrator> &inIntegrator)
+{
+        integrator = std::move(inIntegrator);
 }
 
 SimpsonIntegrator::SimpsonIntegrator() {};
@@ -55,8 +68,3 @@ double TrapeziumIntegrator::integrate(const double delta_x, const std::vector<do
 
     return total;
 }
-
-// double AbstractIntegrator::integrate(const double delta_x, const std::vector<double> &ys)
-// {
-//     return 0;
-// }
