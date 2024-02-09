@@ -3,8 +3,14 @@
 #include <vector>
 #include <functional>
 
+class AbstractIntegrator
+{
+    public:
+    virtual double integrate(const double delta_x, const std::vector<double> &ys) = 0;
+};
 
-class SimpsonIntegrator
+
+class SimpsonIntegrator : public AbstractIntegrator
 {
     public:
     SimpsonIntegrator();
@@ -12,7 +18,7 @@ class SimpsonIntegrator
     double integrate(const double delta_x, const std::vector<double> &ys);
 };
 
-class TrapeziumIntegrator
+class TrapeziumIntegrator : public AbstractIntegrator
 {
     public:
     TrapeziumIntegrator();
@@ -23,12 +29,14 @@ class TrapeziumIntegrator
 class DiscreteFunction
 {
     public:
-    DiscreteFunction(std::vector<double> y, double x_min, double x_max);
+    DiscreteFunction(std::vector<double> y, double x_min, double x_max, std::unique_ptr<AbstractIntegrator> &inIntegrator);
+    // DiscreteFunction(std::unique_ptr<AbstractIntegrator> &inIntegrator);
 
     double integrate();
 
     private:
-    std::unique_ptr<TrapeziumIntegrator> integrator;
+    // std::unique_ptr<TrapeziumIntegrator> integrator;
+    std::unique_ptr<AbstractIntegrator> integrator;
     std::vector<double> ys;
     double min_x;
     double max_x;
